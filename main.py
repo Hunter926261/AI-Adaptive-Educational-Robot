@@ -1,5 +1,8 @@
+from src.voice.audio_input import record_audio
+
 def main():
-    print("AI Adaptive Educational Robot - LEVEL 0 initialized")
+    print("LEVEL-1: Voice I/O initialized")
+    record_audio()
 
 if __name__ == "__main__":
     main()
