@@ -1,27 +1,43 @@
 from src.voice.wake_word import listen_for_wake_word
 from src.voice.stt import recognize_speech
+from src.voice.tts import speak
+import time
 
 def main():
-    print("LEVEL-1-C: Wake word 'hello Guru' active")
+    print("LEVEL-1-D: Full Voice I/O active")
 
     while True:
+        # 1. Wait for wake word
         listen_for_wake_word()
 
-        print("🗣 Choose language:")
-        print("1️⃣ English")
-        print("2️⃣ Hindi")
-
-        choice = input("Enter 1 or 2: ").strip()
+        # 2. Language selection
+        print("Choose language: 1-English | 2-Hindi")
+        choice = input("Enter choice: ").strip()
 
         if choice == "2":
-            language = "hi"
-            print("🎧 Hindi STT activated")
+            lang = "hi"
+            speak("आप क्या कहना चाहते हैं?", "hi")
         else:
-            language = "en"
-            print("🎧 English STT activated")
+            lang = "en"
+            speak("What would you like to say?", "en")
 
-        text = recognize_speech(language=language)
+        # Small pause to allow TTS to finish cleanly
+        time.sleep(0.5)
+
+        # 3. Speech to Text
+        text = recognize_speech(language=lang)
         print("You said:", text)
+
+        # 4. MUST speak response (this was missing/skipped earlier)
+        print("🔊 Speaking response...")
+        if lang == "hi":
+            speak(f"आपने कहा: {text}", "hi")
+        else:
+            speak(f"You said: {text}", "en")
+
+
+        # Pause before looping back to wake word
+        time.sleep(0.5)
 
 
 if __name__ == "__main__":
