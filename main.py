@@ -1,44 +1,52 @@
+from src.ai.intent_router import detect_intent
 from src.voice.wake_word import listen_for_wake_word
 from src.voice.stt import recognize_speech
 from src.voice.tts import speak
 import time
 
 def main():
-    print("LEVEL-1-D: Full Voice I/O active")
+    print("LEVEL-2-A: Brain v1 (Intent Routing) active")
 
     while True:
-        # 1. Wait for wake word
+        # 1. Wake word
         listen_for_wake_word()
 
         # 2. Language selection
         print("Choose language: 1-English | 2-Hindi")
         choice = input("Enter choice: ").strip()
+        lang = "hi" if choice == "2" else "en"
 
-        if choice == "2":
-            lang = "hi"
-            speak("आप क्या कहना चाहते हैं?", "hi")
-        else:
-            lang = "en"
-            speak("What would you like to say?", "en")
-
-        # Small pause to allow TTS to finish cleanly
+        speak("Speak now", lang)
         time.sleep(0.5)
 
-        # 3. Speech to Text
+        # 3. STT
         text = recognize_speech(language=lang)
         print("You said:", text)
 
-        # 4. MUST speak response (this was missing/skipped earlier)
-        print("🔊 Speaking response...")
-        if lang == "hi":
-            speak(f"आपने कहा: {text}", "hi")
+        # 4. 🧠 Brain v1
+        intent = detect_intent(text, lang)
+        print(f"Detected intent: {intent}")
+
+        if intent == "greeting":
+            speak("Hello! How can I help you?", lang)
+
+        elif intent == "ask_name":
+            speak("I am your AI educational robot.", lang)
+
+        elif intent == "ask_definition":
+            speak("Please tell me the topic you want to know about.", lang)
+
+        elif intent == "learn_topic":
+            speak("Sure. Tell me the topic you want to learn.", lang)
+
+        elif intent == "stop":
+            speak("Okay, stopping. Goodbye!", lang)
+            break
+
         else:
-            speak(f"You said: {text}", "en")
+            speak("Sorry, I did not understand. Can you rephrase?", lang)
 
-
-        # Pause before looping back to wake word
         time.sleep(0.5)
-
 
 if __name__ == "__main__":
     main()
