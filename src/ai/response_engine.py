@@ -6,13 +6,20 @@ def generate_response(intent, text, language="en"):
 
     if intent == "ask_definition":
         if "ai" in text:
-            data = KNOWLEDGE_BASE["ai"]
-            return (
-                data["definition"][language],
-                data["example"][language]
-            )
+            topic = KNOWLEDGE_BASE["ai"]
+            return [
+                topic["definition"][language],
+                topic["explanation"][language],
+                topic["example"][language]
+            ]
 
-    return (
+    if intent == "learn_topic":
+        return [
+            "Great! Let’s start learning step by step.",
+            "Please tell me which topic you want to begin with."
+        ]
+
+    return [
         "I am still learning this topic.",
-        "Please try another question."
-    )
+        "Please try asking in a different way."
+    ]

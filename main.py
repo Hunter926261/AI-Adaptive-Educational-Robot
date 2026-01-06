@@ -35,11 +35,10 @@ def main():
             break
 
         # 🤖 Response Engine Integration
-        response, example = generate_response(intent, text, lang)
-        speak(response, lang)
+        responses = generate_response(intent, text, lang)
 
-        if example:
-            speak(example, lang)
+        for msg in responses:
+            speak(msg, lang)
 
         time.sleep(0.5)
 
