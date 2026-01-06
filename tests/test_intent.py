@@ -1,13 +1,13 @@
 from src.ai.intent_router import detect_intent
 
 tests = [
-    ("hello", "en"),
-    ("what is artificial intelligence", "en"),
-    ("मुझे AI सिखाओ", "hi"),
-    ("तुम कौन हो", "hi"),
+    ("What is artificial intelligence?", "en"),
+    ("Explain AI", "en"),
+    ("AI kya hota hai?", "hi"),
+    ("Artificial intelligence ka matlab", "hi"),
+    ("Teach me about AI", "en"),
     ("asdf qwerty", "en")
 ]
 
 for text, lang in tests:
-    intent = detect_intent(text, lang)
-    print(f"Input: {text} | Intent: {intent}")
+    print(text, "→", detect_intent(text, lang))
