@@ -10,8 +10,8 @@ INTENTS = {
         "hi": ["तुम कौन हो", "तुम्हारा नाम"]
     },
     "ask_definition": {
-        "en": ["what is", "define", "explain"],
-        "hi": ["क्या है", "परिभाषा", "समझाओ"]
+    "en": ["what is", "define", "explain", "meaning of"],
+    "hi": ["क्या है", "समझाओ", "मतलब", "kya hota hai", "ka matlab"]
     },
     "learn_topic": {
         "en": ["teach me", "learn", "start"],

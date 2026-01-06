@@ -2,6 +2,7 @@ from src.ai.intent_router import detect_intent
 
 tests = [
     ("What is artificial intelligence?", "en"),
+    ("explain artificial intelligence", "en"),
     ("Explain AI", "en"),
     ("AI kya hota hai?", "hi"),
     ("Artificial intelligence ka matlab", "hi"),
