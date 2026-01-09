@@ -3,8 +3,11 @@ from src.ai.response_engine import generate_response
 from src.ai.conversation_state import ConversationState
 from src.ai.followup_engine import generate_followup
 
-from src.education.lesson_engine import LessonEngine   # 🔹 LEVEL-3 import
+# 📘 LEVEL-3 imports
+from src.education.lesson_engine import LessonEngine
+from src.education.answer_evaluator import evaluate_answer
 
+# 🎙 Voice modules
 from src.voice.wake_word import listen_for_wake_word
 from src.voice.stt import recognize_speech
 from src.voice.tts import speak
@@ -37,6 +40,10 @@ def main():
         text = recognize_speech(language=lang)
         print("You said:", text)
 
+        if not text:
+            speak("I did not catch that. Please try again.", lang)
+            continue
+
         # 4️⃣ 🧠 Intent Detection
         intent = detect_intent(text, lang)
         print(f"Detected intent: {intent}")
@@ -61,15 +68,37 @@ def main():
         if followup:
             speak(followup, lang)
 
-            # 🧠📘 LEVEL-3-A: Auto-start lesson (temporary)
+            # 📘 LEVEL-3-A: Auto-start lesson
             if state.current_topic:
                 lesson = lesson_engine.start_lesson(state.current_topic)
 
                 if lesson:
+                    # 🧠 Teach
                     speak(lesson["concept"], lang)
                     speak(lesson["explanation"][lang], lang)
                     speak(lesson["example"][lang], lang)
+
+                    # ❓ Ask question
                     speak(lesson["question"][lang], lang)
+
+                    # 🟦 STEP-3: Answer Checking
+                    speak("Please answer.", lang)
+                    user_answer = recognize_speech(language=lang)
+
+                    if not user_answer:
+                        speak("No worries. Let's try again next time.", lang)
+                    else:
+                        is_correct = evaluate_answer(
+                            user_answer,
+                            lesson["expected_answers"][lang],
+                            lang
+                        )
+
+                        if is_correct:
+                            speak("Good job! That is correct.", lang)
+                        else:
+                            speak("Nice try. Let me explain again.", lang)
+                            speak(lesson["example"][lang], lang)
 
         time.sleep(0.5)
 

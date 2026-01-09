@@ -14,6 +14,10 @@ CURRICULUM = {
                 "question": {
                     "en": "Can you name one AI application?",
                     "hi": "क्या आप एक एआई एप्लिकेशन का नाम बता सकते हैं?"
+                },
+                "expected_answers": {
+                    "en": ["assistant", "alexa", "siri", "ai"],
+                    "hi": ["एलेक्सा", "सिरी", "एआई"]
                 }
             }
         ]
