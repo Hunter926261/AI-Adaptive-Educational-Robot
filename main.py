@@ -106,9 +106,6 @@ def main():
                             correct=is_correct
                         )
 
-                        # 🧪 TEMP DEBUG (remove after verification)
-                        print("📊 Learning progress:", learning_tracker.progress)
-
 
                         if is_correct:
                             speak("Good job! That is correct.", lang)
