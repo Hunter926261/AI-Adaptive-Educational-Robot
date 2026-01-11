@@ -18,4 +18,4 @@ and optional cloud-assisted retraining.
 - Machine Learning (edge-first)
 
 ## Project Status
-LEVEL-0: Foundation Setup (In Progress)
+LEVEL-3: Foundation Completed & Adaptive Learning is in progress
