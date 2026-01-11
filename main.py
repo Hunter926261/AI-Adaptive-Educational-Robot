@@ -7,6 +7,9 @@ from src.ai.followup_engine import generate_followup
 from src.education.lesson_engine import LessonEngine
 from src.education.answer_evaluator import evaluate_answer
 
+# 🧠 LEVEL-4-A Learning Tracker
+from src.ai.learning_tracker import LearningTracker
+
 # 🎙 Voice modules
 from src.voice.wake_word import listen_for_wake_word
 from src.voice.stt import recognize_speech
@@ -16,13 +19,16 @@ import time
 
 
 def main():
-    print("LEVEL-2-A: Brain v1 (Intent Routing) active")
+    print("LEVEL-4-A: Learning Tracker")
 
     # 🧠 Initialize conversation state ONCE
     state = ConversationState()
 
-    # 📘 Initialize lesson engine ONCE (LEVEL-3)
+    # 📘 Initialize lesson engine ONCE
     lesson_engine = LessonEngine()
+
+    # 🧠 Initialize learning tracker ONCE (STEP-2)
+    learning_tracker = LearningTracker()
 
     while True:
         # 1️⃣ Wake word
@@ -53,7 +59,7 @@ def main():
             speak("Okay, stopping. Goodbye!", lang)
             break
 
-        # 5️⃣ 🤖 Response Engine (LEVEL-2-C)
+        # 5️⃣ 🤖 Response Engine
         responses = generate_response(intent, text, lang)
         for msg in responses:
             speak(msg, lang)
@@ -62,7 +68,7 @@ def main():
         topic = "ai" if "ai" in text.lower() else None
         state.update(intent=intent, topic=topic)
 
-        # 7️⃣ 🔁 Generate follow-up question (LEVEL-2-D)
+        # 7️⃣ 🔁 Generate follow-up question
         followup = generate_followup(intent, state.current_topic, lang)
 
         if followup:
@@ -81,7 +87,7 @@ def main():
                     # ❓ Ask question
                     speak(lesson["question"][lang], lang)
 
-                    # 🟦 STEP-3: Answer Checking
+                    # 🟦 Answer Checking
                     speak("Please answer.", lang)
                     user_answer = recognize_speech(language=lang)
 
@@ -93,6 +99,16 @@ def main():
                             lesson["expected_answers"][lang],
                             lang
                         )
+
+                        # 🧠 STEP-2: RECORD LEARNING DATA (silent)
+                        learning_tracker.record_attempt(
+                            topic=state.current_topic,
+                            correct=is_correct
+                        )
+
+                        # 🧪 TEMP DEBUG (remove after verification)
+                        print("📊 Learning progress:", learning_tracker.progress)
+
 
                         if is_correct:
                             speak("Good job! That is correct.", lang)
