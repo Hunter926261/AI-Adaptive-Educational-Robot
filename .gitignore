@@ -14,3 +14,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Vosk speech recognition models
+models/
+vosk-model-*/
