@@ -10,6 +10,9 @@ from src.education.answer_evaluator import evaluate_answer
 # 🧠 LEVEL-4-A Learning Tracker
 from src.ai.learning_tracker import LearningTracker
 
+# 🧠 STEP-2 Learning Analyzer
+from src.ai.learning_analyzer import analyze_strength
+
 # 🎙 Voice modules
 from src.voice.wake_word import listen_for_wake_word
 from src.voice.stt import recognize_speech
@@ -19,7 +22,7 @@ import time
 
 
 def main():
-    print("LEVEL-4-A: Learning Tracker")
+    print("LEVEL-4-B: Strength Weakness Analysis")
 
     # 🧠 Initialize conversation state ONCE
     state = ConversationState()
@@ -27,7 +30,7 @@ def main():
     # 📘 Initialize lesson engine ONCE
     lesson_engine = LessonEngine()
 
-    # 🧠 Initialize learning tracker ONCE (STEP-2)
+    # 🧠 Initialize learning tracker ONCE
     learning_tracker = LearningTracker()
 
     while True:
@@ -100,12 +103,19 @@ def main():
                             lang
                         )
 
-                        # 🧠 STEP-2: RECORD LEARNING DATA (silent)
+                        # 🧠 LEVEL-4-A: RECORD LEARNING DATA (silent)
                         learning_tracker.record_attempt(
                             topic=state.current_topic,
                             correct=is_correct
                         )
 
+                        # 🧠 STEP-2: ANALYZE LEARNING STRENGTH (internal)
+                        stats = learning_tracker.get_stats(state.current_topic)
+                        strength = analyze_strength(stats)
+
+                        print(
+                            f"Learning strength for {state.current_topic}: {strength}"
+                        )
 
                         if is_correct:
                             speak("Good job! That is correct.", lang)
